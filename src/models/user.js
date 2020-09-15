@@ -51,12 +51,12 @@ const userSchema = new mongoose.Schema( {
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, 'thisismynewcourse', {expiresIn: '7 days'})
+    const token = jwt.sign({ _id: user._id.toString() }, 'thisismynewcourse')
     
     user.tokens = user.tokens.concat({token})
 
     user.save()
-    
+
     return token
 } 
 
