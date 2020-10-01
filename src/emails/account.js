@@ -10,6 +10,10 @@ const sendWelcomeEmail = (email, name) => {
         from: 'guivipom@gmail.com',
         subject: 'Thanks for joining in!',
         text: `Welcome to the app, ${name}. Let me know how you get along with the app.`
+    }).then( ()=> {
+        console.log('Email sent succesfully');
+    }).catch((e)=>{
+        console.log(e.response.body)
     })
 }
 
