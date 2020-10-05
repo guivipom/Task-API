@@ -1,4 +1,4 @@
-# Task REST API
+# Task API
 
 The Task API provides a backend service that allow users to create and track task. The API is able to create the users in the database and when they are logged in they can list their tracks, create new ones or delete old ones.
 
@@ -11,13 +11,88 @@ The API can be tested on HEROKU where I deployed it.
 
 As a prerequisite you will need to download and install [git](https://git-scm.com/downloads)  [Node.js](https://git-scm.com/downloads) and set up a [MongoDB] database.
 
-## Installation
+## Local Installation
 
-ToDo ...
+After you cloned the git repository, go inside the main project folder and execute the next command to install all the necessary dependencies. 
 
-## Usage
+```bash
+npm install
+```
 
-ToDo ...
+## Local Usage
+
+To use the API locally you will need to create your own environment variable folder. For this create a folder named 'config' and inside there a file named 'dev.env'. Copy the next content that you will have to customize with your own data
+    PORT=3000
+    SENGRID_API_KEY=YourOwnSENGRIDAPIKEY
+    MONGODB_URL=mongodb://127.0.0.1:27017/thenameyouwant-api-db
+    JWT_SECRET=yourownrandomesentence
+This environment variables are needed for the app to run completely. To use the email service you will need to register https://sendgrid.com/solutions/email-api/ and use your own email API, you can do this for free.
+
+After you have created the file you can start the local server by running
+    npm run dev
+
+# TASK API Usage
+
+Usage of the TASK API
+
+## Create user
+
+### Request
+
+`POST /users`
+
+    curl --location --request POST 'https://guivipom-task-manager.herokuapp.com/users' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name":"James33",
+        "email":"guivipom12@gmail.com",
+        "password": "1232222y7"
+    }'
+
+### Response
+
+    HTTP/1.1 201 Created
+    Content-Type: application/json
+    {
+    "user": {
+        "age": 0,
+        "_id": "5f7b4d2dbcea25460c7a1567",
+        "name": "James33",
+        "email": "guivipom12@gmail.com",
+        "createdAt": "2020-10-05T16:43:25.795Z",
+        "updatedAt": "2020-10-05T16:43:25.795Z",
+        "__v": 0
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdiNGQyZGJjZWEyNTQ2MGM3YTE1NjciLCJpYXQiOjE2MDE5MTYyMDV9.2SFlRnDoEGSoyPwJTbeDYjF-lTUkmUXfD_LJ5nEBJCk"
+    }
+
+## Log in user
+
+### Request
+
+`POST /users/login`
+
+    curl --location --request POST 'https://guivipom-task-manager.herokuapp.com/users/login' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "email": "guivipom@gmail.com",
+        "password": "1232222y7"
+    }'
+
+### Response
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    "user": {
+        "age": 0,
+        "_id": "5f7b58967080d700172ff328",
+        "name": "James33",
+        "email": "guivipom@gmail.com",
+        "createdAt": "2020-10-05T17:32:06.986Z",
+        "updatedAt": "2020-10-05T17:32:07.117Z",
+        "__v": 1
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdiNTg5NjcwODBkNzAwMTcyZmYzMjgiLCJpYXQiOjE2MDE5MTkxMzd9.hUQIHFp9Q6DuDsLsNgQfudMZyV-KXs-LuCVfIweQOO0"
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
@@ -25,26 +100,7 @@ ToDo ...
 
 
 
-# REST API example application
 
-This is a bare-bones example of a Sinatra application providing a REST
-API to a DataMapper-backed model.
-
-The entire application is contained within the `app.rb` file.
-
-`config.ru` is a minimal Rack configuration for unicorn.
-
-`run-tests.sh` runs a simplistic test and generates the API
-documentation below.
-
-It uses `run-curl-tests.rb` which runs each command defined in
-`commands.yml`.
-
-## Install
-
-    bundle install
-
-## Run the app
 
     unicorn -p 7000
 
@@ -114,265 +170,45 @@ The REST API to the example app is described below.
 
     {"id":1,"name":"Foo","status":"new"}
 
-## Get a non-existent Thing
+## Create user
 
 ### Request
 
-`GET /thing/id`
+`POST /users`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/9999
-
-### Response
-
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 35
-
-    {"status":404,"reason":"Not found"}
-
-## Create another new Thing
-
-### Request
-
-`POST /thing/`
-
-    curl -i -H 'Accept: application/json' -d 'name=Bar&junk=rubbish' http://localhost:7000/thing
+    curl --location --request POST 'https://guivipom-task-manager.herokuapp.com/users' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name":"James33",
+        "email":"guivipom12@gmail.com",
+        "password": "1232222y7"
+    }'
 
 ### Response
 
     HTTP/1.1 201 Created
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 201 Created
-    Connection: close
+    Status: 201 OK
     Content-Type: application/json
-    Location: /thing/2
-    Content-Length: 35
+    {
+    "user": {
+        "age": 0,
+        "_id": "5f7b4d2dbcea25460c7a1567",
+        "name": "James33",
+        "email": "guivipom12@gmail.com",
+        "createdAt": "2020-10-05T16:43:25.795Z",
+        "updatedAt": "2020-10-05T16:43:25.795Z",
+        "__v": 0
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdiNGQyZGJjZWEyNTQ2MGM3YTE1NjciLCJpYXQiOjE2MDE5MTYyMDV9.2SFlRnDoEGSoyPwJTbeDYjF-lTUkmUXfD_LJ5nEBJCk"
+    }
 
-    {"id":2,"name":"Bar","status":null}
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
 
-## Get list of Things again
 
-### Request
 
-`GET /thing/`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/
 
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 74
-
-    [{"id":1,"name":"Foo","status":"new"},{"id":2,"name":"Bar","status":null}]
-
-## Change a Thing's state
-
-### Request
-
-`PUT /thing/:id/status/changed`
-
-    curl -i -H 'Accept: application/json' -X PUT http://localhost:7000/thing/1/status/changed
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 40
-
-    {"id":1,"name":"Foo","status":"changed"}
-
-## Get changed Thing
-
-### Request
-
-`GET /thing/id`
-
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 40
-
-    {"id":1,"name":"Foo","status":"changed"}
-
-## Change a Thing
-
-### Request
-
-`PUT /thing/:id`
-
-    curl -i -H 'Accept: application/json' -X PUT -d 'name=Foo&status=changed2' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
-
-    {"id":1,"name":"Foo","status":"changed2"}
-
-## Attempt to change a Thing using partial params
-
-### Request
-
-`PUT /thing/:id`
-
-    curl -i -H 'Accept: application/json' -X PUT -d 'status=changed3' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
-
-    {"id":1,"name":"Foo","status":"changed3"}
-
-## Attempt to change a Thing using invalid params
-
-### Request
-
-`PUT /thing/:id`
-
-    curl -i -H 'Accept: application/json' -X PUT -d 'id=99&status=changed4' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
-
-    {"id":1,"name":"Foo","status":"changed4"}
-
-## Change a Thing using the _method hack
-
-### Request
-
-`POST /thing/:id?_method=POST`
-
-    curl -i -H 'Accept: application/json' -X POST -d 'name=Baz&_method=PUT' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
-
-    {"id":1,"name":"Baz","status":"changed4"}
-
-## Change a Thing using the _method hack in the url
-
-### Request
-
-`POST /thing/:id?_method=POST`
-
-    curl -i -H 'Accept: application/json' -X POST -d 'name=Qux' http://localhost:7000/thing/1?_method=PUT
-
-### Response
-
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: text/html;charset=utf-8
-    Content-Length: 35
-
-    {"status":404,"reason":"Not found"}
-
-## Delete a Thing
-
-### Request
-
-`DELETE /thing/id`
-
-    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/thing/1/
-
-### Response
-
-    HTTP/1.1 204 No Content
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 204 No Content
-    Connection: close
-
-
-## Try to delete same Thing again
-
-### Request
-
-`DELETE /thing/id`
-
-    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/thing/1/
-
-### Response
-
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 35
-
-    {"status":404,"reason":"Not found"}
-
-## Get deleted Thing
-
-### Request
-
-`GET /thing/1`
-
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:33 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 35
-
-    {"status":404,"reason":"Not found"}
-
-## Delete a Thing using the _method hack
-
-### Request
-
-`DELETE /thing/id`
-
-    curl -i -H 'Accept: application/json' -X POST -d'_method=DELETE' http://localhost:7000/thing/2/
-
-### Response
-
-    HTTP/1.1 204 No Content
-    Date: Thu, 24 Feb 2011 12:36:33 GMT
-    Status: 204 No Content
-    Connection: close
 
 
 
