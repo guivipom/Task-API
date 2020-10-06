@@ -94,116 +94,227 @@ Usage of the TASK API
     },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdiNTg5NjcwODBkNzAwMTcyZmYzMjgiLCJpYXQiOjE2MDE5MTkxMzd9.hUQIHFp9Q6DuDsLsNgQfudMZyV-KXs-LuCVfIweQOO0"
 
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
-
-
-
-
-
-
-    unicorn -p 7000
-
-## Run the tests
-
-    ./run-tests.sh
-
-# REST API
-
-The REST API to the example app is described below.
-
-## Get list of Things
+## Log out user
 
 ### Request
 
-`GET /thing/`
+`POST /users/logout`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/
+    curl --location --request POST 'https://guivipom-task-manager.herokuapp.com/users/logout' \
+    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdiNTg5NjcwODBkNzAwMTcyZmYzMjgiLCJpYXQiOjE2MDE5ODA0MDJ9.l5eYpRXSQntChXQmSFwbWV_dgWfareJ9zo1UtmxTCXQ'
 
 ### Response
 
     HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 200 OK
-    Connection: close
     Content-Type: application/json
-    Content-Length: 2
 
-    []
-
-## Create a new Thing
+## Get user profile
 
 ### Request
 
-`POST /thing/`
+`GET /users/me`
 
-    curl -i -H 'Accept: application/json' -d 'name=Foo&status=new' http://localhost:7000/thing
-
-### Response
-
-    HTTP/1.1 201 Created
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 201 Created
-    Connection: close
-    Content-Type: application/json
-    Location: /thing/1
-    Content-Length: 36
-
-    {"id":1,"name":"Foo","status":"new"}
-
-## Get a specific Thing
-
-### Request
-
-`GET /thing/id`
-
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+    curl --location --request GET 'https://guivipom-task-manager.herokuapp.com/users/me' \
+    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdiNTg5NjcwODBkNzAwMTcyZmYzMjgiLCJpYXQiOjE2MDE5ODA0MDJ9.l5eYpRXSQntChXQmSFwbWV_dgWfareJ9zo1UtmxTCXQ'
 
 ### Response
 
     HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 200 OK
-    Connection: close
     Content-Type: application/json
-    Content-Length: 36
+    {
+        "age": 0,
+        "_id": "5f7b58967080d700172ff328",
+        "name": "James33",
+        "email": "guivipom@gmail.com",
+        "createdAt": "2020-10-05T17:32:06.986Z",
+        "updatedAt": "2020-10-06T10:37:14.100Z",
+        "__v": 5
+    }
 
-    {"id":1,"name":"Foo","status":"new"}
-
-## Create user
+## Update user information
 
 ### Request
 
-`POST /users`
+`PATCH /users/me`
 
-    curl --location --request POST 'https://guivipom-task-manager.herokuapp.com/users' \
+    curl --location --request PATCH 'https://guivipom-task-manager.herokuapp.com/users/me' \
+    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdjNGE3YjM1ODM5YTAwMTczZmUyM2IiLCJpYXQiOjE2MDE5ODExMDh9.lYHXJGT2DCnhYtkBrVax2aZAmVYSnKFaML2n5KAg8qk' \
     --header 'Content-Type: application/json' \
     --data-raw '{
-        "name":"James33",
-        "email":"guivipom12@gmail.com",
-        "password": "1232222y7"
+        "name" : "Guillermo",
+        "age": "29"  
+        }'
+
+### Response
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    {
+        "age": 29,
+        "_id": "5f7c4a7b35839a00173fe23b",
+        "name": "Guillermo",
+        "email": "guivipom@gmail.com",
+        "createdAt": "2020-10-06T10:44:11.335Z",
+        "updatedAt": "2020-10-06T10:45:13.620Z",
+        "__v": 2
+    }
+
+## Delete user
+
+### Request
+
+`DELETE /users/me`
+
+    curl --location --request DELETE 'https://guivipom-task-manager.herokuapp.com/users/me' \
+    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdiNTg5NjcwODBkNzAwMTcyZmYzMjgiLCJpYXQiOjE2MDE5ODA0MDJ9.l5eYpRXSQntChXQmSFwbWV_dgWfareJ9zo1UtmxTCXQ'
+
+### Response
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    {
+        "age": 0,
+        "_id": "5f7b58967080d700172ff328",
+        "name": "James33",
+        "email": "guivipom@gmail.com",
+        "createdAt": "2020-10-05T17:32:06.986Z",
+        "updatedAt": "2020-10-06T10:37:14.100Z",
+        "__v": 5
+    }
+
+## Create Task
+
+### Request
+
+`POST /tasks`
+
+    curl --location --request POST 'https://guivipom-task-manager.herokuapp.com/tasks' \
+    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdjNGE3YjM1ODM5YTAwMTczZmUyM2IiLCJpYXQiOjE2MDE5ODExMDh9.lYHXJGT2DCnhYtkBrVax2aZAmVYSnKFaML2n5KAg8qk' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "description": "Finish API"
     }'
 
 ### Response
 
-    HTTP/1.1 201 Created
-    Status: 201 OK
+    HTTP/1.1 201 OK
     Content-Type: application/json
     {
-    "user": {
-        "age": 0,
-        "_id": "5f7b4d2dbcea25460c7a1567",
-        "name": "James33",
-        "email": "guivipom12@gmail.com",
-        "createdAt": "2020-10-05T16:43:25.795Z",
-        "updatedAt": "2020-10-05T16:43:25.795Z",
+        "completed": false,
+        "_id": "5f7c4b7335839a00173fe23e",
+        "description": "Finish API",
+        "owner": "5f7c4a7b35839a00173fe23b",
+        "createdAt": "2020-10-06T10:48:19.587Z",
+        "updatedAt": "2020-10-06T10:48:19.587Z",
         "__v": 0
-    },
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdiNGQyZGJjZWEyNTQ2MGM3YTE1NjciLCJpYXQiOjE2MDE5MTYyMDV9.2SFlRnDoEGSoyPwJTbeDYjF-lTUkmUXfD_LJ5nEBJCk"
     }
+
+## Get list of Task
+
+### Request
+
+`GET /tasks?sortBy=createdAt:asc&limit=1`
+
+    curl --location --request GET 'https://guivipom-task-manager.herokuapp.com/tasks?sortBy=createdAt:asc&limit=1' \
+    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdjNGE3YjM1ODM5YTAwMTczZmUyM2IiLCJpYXQiOjE2MDE5ODExMDh9.lYHXJGT2DCnhYtkBrVax2aZAmVYSnKFaML2n5KAg8qk'
+
+### Response
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    [
+        {
+            "completed": false,
+            "_id": "5f7c4b7335839a00173fe23e",
+            "description": "Finish API",
+            "owner": "5f7c4a7b35839a00173fe23b",
+            "createdAt": "2020-10-06T10:48:19.587Z",
+            "updatedAt": "2020-10-06T10:48:19.587Z",
+            "__v": 0
+        }
+    ]
+
+## Update Task
+
+### Request
+
+`PATCH /tasks/{{_id}}`
+
+    curl --location --request PATCH 'https://guivipom-task-manager.herokuapp.com/tasks/5f7c4b7335839a00173fe23e' \
+    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdjNGE3YjM1ODM5YTAwMTczZmUyM2IiLCJpYXQiOjE2MDE5ODExMDh9.lYHXJGT2DCnhYtkBrVax2aZAmVYSnKFaML2n5KAg8qk' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "completed" : true
+        }'
+
+### Response
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    {
+        "completed": true,
+        "_id": "5f7c4b7335839a00173fe23e",
+        "description": "Finish API",
+        "owner": "5f7c4a7b35839a00173fe23b",
+        "createdAt": "2020-10-06T10:48:19.587Z",
+        "updatedAt": "2020-10-06T10:55:18.675Z",
+        "__v": 0
+    }
+
+## Delete Task
+
+### Request
+
+`Delete /tasks/{{_id}}`
+
+    curl --location --request DELETE 'https://guivipom-task-manager.herokuapp.com/tasks/5f7c4b7335839a00173fe23e' \
+    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjdjNGE3YjM1ODM5YTAwMTczZmUyM2IiLCJpYXQiOjE2MDE5ODExMDh9.lYHXJGT2DCnhYtkBrVax2aZAmVYSnKFaML2n5KAg8qk'
+
+### Response
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    {
+        "completed": true,
+        "_id": "5f7c4b7335839a00173fe23e",
+        "description": "Finish API",
+        "owner": "5f7c4a7b35839a00173fe23b",
+        "createdAt": "2020-10-06T10:48:19.587Z",
+        "updatedAt": "2020-10-06T10:55:18.675Z",
+        "__v": 0
+    }
+
+## Upload avatar
+
+### Request
+
+`POST /users/me/avatar`
+
+    curl --location --request POST 'https://guivipom-task-manager.herokuapp.com/users/me/avatar' \
+    --form 'avatar=@{{Full path to your image}}/profile-pic.jpg'
+### Response
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+## Delete avatar
+
+### Request
+
+`DELETE /users/me/avatar`
+
+    curl --location --request POST 'https://guivipom-task-manager.herokuapp.com/users/me/avatar' \
+    --form 'avatar=@{{Full path to your image}}/profile-pic.jpg'
+### Response
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+
 
 
 
